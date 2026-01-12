@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     clang \
     make
 
-RUN cargo install --locked linera-service@0.15.5 linera-storage-service@0.15.5
+# Install Linera CLI (via linera-service crate) and storage service for localnet
+RUN cargo install --locked linera-service@0.15.8 linera-storage-service@0.15.8
 
 RUN apt-get install -y curl
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.40.3/install.sh | bash \
