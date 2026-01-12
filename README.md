@@ -1,36 +1,98 @@
-# Linera buildathon submission template
+# Boltis Linera Buildathon Submission
 
-This template provides a Docker container with all the necessary
-dependencies to build and run a local Linera application against a
-local network.
+A card game platform built on Linera blockchain with smart contracts for game state management and leaderboard tracking.
 
-If you want to submit an app running against a local network, please
-use this template.  If you have provided a link to a live demo running
-against the testnet, you do not need to use this template (but it may
-be helpful anyway!).
+## 🎮 Project Overview
 
-## Structure
+Boltis is a multiplayer card game (similar to UNO) with on-chain state management and player progression system. This submission includes three Linera smart contracts deployed to testnet.
 
-The template provides a `Dockerfile` describing a container with all the
-necessary dependencies for Linera backend and frontend development, as
-well as a simple `compose.yaml` file for Docker Compose that mounts
-the current directory at `/build` and exposes the following ports:
+## 📦 Contracts
 
-- 5173: the frontend of your application (optional)
-- 8080: the Linera faucet
-- 9001: the localnet validator's proxy
-- 13001: the localnet validator itself
+### 1. **Shared Counter** (`shared-value/`)
 
-Please keep this port structure, and make sure the `Dockerfile` or the
-`compose.yaml` defines a reasonable healthcheck for your app (the
-default waits for your frontend to be served on `localhost:5173`).
-Other internal structure is optional; feel free to change it.
+- Simple counter contract for testing and demonstration
+- **Testnet App ID**: `a853136aaf79d91155eff9def2a6002122fac5ef691102179e8cc8ee62290b86`
 
-## Usage
+### 2. **Game Engine** (`game-engine/`)
 
-To get started, fill in `run.bash` with instructions to build and run
-your backend and (if applicable) frontend.
+- Manages game state and player moves
+- Stores game sessions on-chain
+- Validates and applies game operations
 
-To test that your submission works, run `docker compose up
---force-recreate` and access your application frontend at
-`localhost:5173`.
+### 3. **Leaderboard** (`leaderboard/`)
+
+- Tracks player scores, XP, and match history
+- Maintains global rankings
+- Records match results and statistics
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Rust 1.86.0 or later
+- Linera CLI (`cargo install linera-service`)
+- Linera wallet configured for testnet
+
+### Build Contracts
+
+```bash
+# Build all contracts
+cd contracts/shared-value && cargo build --release --target wasm32-unknown-unknown
+cd ../game-engine && cargo build --release --target wasm32-unknown-unknown
+cd ../leaderboard && cargo build --release --target wasm32-unknown-unknown
+```
+
+### Deploy to Testnet
+
+```bash
+# Run the deployment script
+./deploy_testnet.sh
+```
+
+This will:
+
+1. Build all WASM binaries
+2. Deploy contracts to Linera testnet
+3. Output application IDs for each contract
+
+## 📁 Project Structure
+
+```
+contracts/
+├── shared-value/       # Counter contract (deployed ✅)
+├── game-engine/        # Game state management
+└── leaderboard/        # Player rankings and stats
+```
+
+## 🔧 Development
+
+### Local Testing with Docker
+
+```bash
+# Start local Linera network
+docker compose up --force-recreate
+```
+
+Ports:
+
+- 5173: Frontend (optional)
+- 8080: Linera faucet
+- 9000: GraphQL service
+- 9001: Validator proxy
+- 13001: Validator
+
+### Key Dependencies
+
+All contracts use:
+
+- `linera-sdk = "0.15.8"`
+- `async-graphql = "=7.0.17"`
+- `async-graphql-value = "=7.0.17"` (pinned to avoid unstable features)
+
+## 🎯 Features
+
+- **On-chain Game State**: All game moves stored on blockchain
+- **Player Progression**: XP system with levels and rankings
+- **Match History**: Complete record of all games played
+- **Leaderboard**: Global player rankings by XP
+- **Testnet Deployment**: Live contracts on Linera Conway testnet

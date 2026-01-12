@@ -1,4 +1,4 @@
-use linera_sdk::linera_base_types::ContractAbi;
+use linera_sdk::linera_base_types::{ContractAbi, ServiceAbi};
 use serde::{Deserialize, Serialize};
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
@@ -71,4 +71,9 @@ pub struct BoltisGameEngineAbi;
 impl ContractAbi for BoltisGameEngineAbi {
     type Operation = Operation;
     type Response = ();
+}
+
+impl ServiceAbi for BoltisGameEngineAbi {
+    type Query = String;
+    type QueryResponse = Option<GameStateWire>;
 }

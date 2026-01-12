@@ -92,11 +92,29 @@ impl Service for BoltisLeaderboardService {
                 QueryResponse::Matches(result)
             }
             Query::GetTotalPlayers => {
-                let count = *self.state.total_players.get();
+                // Count players from MapView
+                let mut count = 0u64;
+                self.state
+                    .players
+                    .for_each_index_value(|_key, _player| {
+                        count += 1;
+                        Ok(())
+                    })
+                    .await
+                    .expect("Failed to count players");
                 QueryResponse::Count(count)
             }
             Query::GetTotalMatches => {
-                let count = *self.state.total_matches.get();
+                // Count matches from MapView
+                let mut count = 0u64;
+                self.state
+                    .matches
+                    .for_each_index_value(|_key, _match| {
+                        count += 1;
+                        Ok(())
+                    })
+                    .await
+                    .expect("Failed to count matches");
                 QueryResponse::Count(count)
             }
         }

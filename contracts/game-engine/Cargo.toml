@@ -17,3 +17,7 @@ tokio = { version = "1.40", features = ["rt", "sync"] }
 [[bin]]
 name = "boltis_game_engine_contract"
 path = "src/contract.rs"
+
+[[bin]]
+name = "boltis_game_engine_service"
+path = "src/service.rs"

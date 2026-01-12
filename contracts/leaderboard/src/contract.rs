@@ -134,12 +134,6 @@ impl BoltisLeaderboardContract {
             .players
             .insert(&wallet_address, player)
             .expect("Failed to insert player");
-
-        // Update total players count if new player
-        let current_total = *self.state.total_players.get();
-        if current_total == 0 || !self.state.players.contains_key(&wallet_address).await.expect("Failed to check player") {
-            self.state.total_players.set(current_total + 1);
-        }
     }
 
     async fn record_match(
@@ -166,9 +160,5 @@ impl BoltisLeaderboardContract {
             .matches
             .insert(&match_id, match_result)
             .expect("Failed to insert match");
-
-        // Update total matches count
-        let current_total = *self.state.total_matches.get();
-        self.state.total_matches.set(current_total + 1);
     }
 }

@@ -31,7 +31,7 @@ mkdir -p wasm-output
 cp contracts/shared-value/target/wasm32-unknown-unknown/release/shared_counter_{contract,service}.wasm wasm-output/
 
 # Copy game-engine WASM files
-cp contracts/game-engine/target/wasm32-unknown-unknown/release/boltis_game_engine_contract.wasm wasm-output/
+cp contracts/game-engine/target/wasm32-unknown-unknown/release/boltis_game_engine_{contract,service}.wasm wasm-output/
 
 # Copy leaderboard WASM files
 cp contracts/leaderboard/target/wasm32-unknown-unknown/release/boltis_leaderboard_{contract,service}.wasm wasm-output/
@@ -56,7 +56,13 @@ echo "✅ Shared-counter deployed!"
 echo "Application ID: $SHARED_COUNTER_APP_ID"
 echo ""
 
-echo "=== Skipping game-engine contract (contract-only, needs service binary) ==="
+echo "=== Deploying game-engine contract ==="
+GAME_ENGINE_APP_ID=$(linera publish-and-create \
+  wasm-output/boltis_game_engine_{contract,service}.wasm \
+  --json-argument "{}")
+
+echo "✅ Game-engine deployed!"
+echo "Application ID: $GAME_ENGINE_APP_ID"
 echo ""
 
 echo "=== Deploying leaderboard contract ==="
@@ -70,9 +76,8 @@ echo ""
 
 echo "=== Deployment Summary ==="
 echo "Shared-counter App ID: $SHARED_COUNTER_APP_ID"
+echo "Game-engine App ID: $GAME_ENGINE_APP_ID"
 echo "Leaderboard App ID: $LEADERBOARD_APP_ID"
-echo ""
-echo "Note: Game-engine contract skipped (needs service binary for deployment)"
 echo ""
 echo "To start GraphQL service:"
 echo "linera service --port 8080"
