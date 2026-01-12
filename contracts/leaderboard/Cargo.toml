@@ -1,5 +1,5 @@
 [package]
-name = "card-game"
+name = "boltis-leaderboard"
 version = "0.1.0"
 edition = "2021"
 
@@ -15,5 +15,9 @@ linera-sdk = { version = "0.15.8", features = ["test", "wasmer"] }
 tokio = { version = "1.40", features = ["rt", "sync"] }
 
 [[bin]]
-name = "card_game_contract"
+name = "boltis_leaderboard_contract"
 path = "src/contract.rs"
+
+[[bin]]
+name = "boltis_leaderboard_service"
+path = "src/service.rs"
